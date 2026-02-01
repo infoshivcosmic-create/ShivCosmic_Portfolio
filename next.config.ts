@@ -4,8 +4,15 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better development
   reactStrictMode: true,
 
-  // Optimize images
+  // GitHub Pages Configuration
+  output: 'export',
+  basePath: '/ShivCosmic_Portfolio',
+  assetPrefix: '/ShivCosmic_Portfolio/',
+  trailingSlash: true,
+
+  // Optimize images (unoptimized required for static export without loader)
   images: {
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
@@ -24,49 +31,8 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 
-  // Security and performance headers
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          }
-        ]
-      },
-      {
-        // Cache static assets aggressively
-        source: '/(.*)\\.(ico|png|jpg|jpeg|gif|svg|woff|woff2)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
-        ]
-      }
-    ];
-  },
+  // Security and performance headers (Note: Headers are not supported in static export, handled via .htaccess)
 
-  // Redirects
-  async redirects() {
-    return [
-      {
-        source: '/consultation',
-        destination: 'https://shivcosmic.in/forms/',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
