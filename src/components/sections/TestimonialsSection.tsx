@@ -50,7 +50,6 @@ const testimonials = [
 export default function TestimonialsSection() {
     return (
         <TestimonialsMarquee
-            title="What Clients Say"
             description="Straight from people who've worked with me. No scripts, no exaggeration."
             testimonials={testimonials}
         />

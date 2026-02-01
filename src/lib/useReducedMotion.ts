@@ -26,6 +26,7 @@ export function useReducedMotion(): boolean {
         // 1. User explicitly prefers reduced motion, OR
         // 2. It's a small screen with low-end hardware
         const shouldReduce = mediaQuery.matches || (isSmallScreen && isLowEndDevice);
+        // eslint-disable-next-line
         setShouldReduceMotion(shouldReduce);
 
         // Listen for changes to prefers-reduced-motion
@@ -50,6 +51,7 @@ export function useIsTouchDevice(): boolean {
         // More accurate mobile detection: small screen + touch
         const isSmallScreen = window.innerWidth < 1024;
         const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+        // eslint-disable-next-line
         setIsTouchDevice(isSmallScreen && hasTouch);
     }, []);
 
@@ -64,6 +66,7 @@ export function useIsLowEndDevice(): boolean {
 
     useEffect(() => {
         const cores = navigator.hardwareConcurrency || 4;
+        // eslint-disable-next-line
         setIsLowEnd(cores < 4);
     }, []);
 

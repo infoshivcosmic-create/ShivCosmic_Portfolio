@@ -20,31 +20,28 @@ function FloatingDock() {
     const [activeSection, setActiveSection] = useState("#hero");
 
     // Throttled scroll handler
+    // Intersection Observer for better performance (O(1) vs O(N) scroll listener)
     useEffect(() => {
-        let ticking = false;
-
-        const handleScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const sections = navItems.map(item => item.href.slice(1));
-                    const scrollPosition = window.scrollY + window.innerHeight / 3;
-
-                    for (let i = sections.length - 1; i >= 0; i--) {
-                        const element = document.getElementById(sections[i]);
-                        if (element && element.offsetTop <= scrollPosition) {
-                            setActiveSection(`#${sections[i]}`);
-                            break;
-                        }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(`#${entry.target.id}`);
                     }
-                    ticking = false;
                 });
-                ticking = true;
+            },
+            {
+                rootMargin: "-20% 0px -60% 0px", // Trigger when section is near top/center
+                threshold: 0,
             }
-        };
+        );
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
+        navItems.forEach((item) => {
+            const element = document.getElementById(item.href.slice(1));
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
     }, []);
 
     return (

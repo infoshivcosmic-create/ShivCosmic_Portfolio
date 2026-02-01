@@ -56,6 +56,17 @@ const nextConfig: NextConfig = {
       }
     ];
   },
+
+  // Redirects
+  async redirects() {
+    return [
+      {
+        source: '/consultation',
+        destination: 'https://shivcosmic.in/forms/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

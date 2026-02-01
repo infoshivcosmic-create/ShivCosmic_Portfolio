@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar, Sparkles, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useEffect, useState, memo, useMemo } from "react";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Dynamically import shader background to avoid SSR issues
 const ShaderBackground = dynamic(
@@ -43,6 +45,10 @@ FloatingParticle.displayName = "FloatingParticle";
 function HeroSection() {
     const [mounted, setMounted] = useState(false);
     const shouldReduceMotion = useReducedMotion();
+    const isMobile = useIsMobile();
+
+    // Aggressively disable heavy effects on mobile
+    const disableHeavyEffects = shouldReduceMotion || isMobile;
 
     useEffect(() => {
         setMounted(true);
@@ -63,10 +69,10 @@ function HeroSection() {
     return (
         <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-[var(--background)]">
             {/* Shader Background - disabled on mobile/reduced motion */}
-            {!shouldReduceMotion && <ShaderBackground speed={0.3} />}
+            {!disableHeavyEffects && <ShaderBackground speed={0.3} />}
 
             {/* Floating particles - desktop only */}
-            {mounted && !shouldReduceMotion && (
+            {mounted && !disableHeavyEffects && (
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
                     {particles.map((particle) => (
                         <FloatingParticle key={particle.id} {...particle} />
@@ -76,7 +82,7 @@ function HeroSection() {
 
             {/* Static gradient orbs for mobile, animated for desktop */}
             <div className="absolute inset-0 pointer-events-none">
-                {shouldReduceMotion ? (
+                {disableHeavyEffects ? (
                     // Static orbs for mobile
                     <>
                         <div
@@ -192,7 +198,7 @@ function HeroSection() {
                         transition={{ duration: 0.5, delay: 0.5 }}
                         className="flex flex-col w-full max-w-xs gap-3"
                     >
-                        <Link href="#contact" className="w-full">
+                        <Link href="https://shivcosmic.in/forms/" className="w-full">
                             <button className="btn-primary text-base flex items-center justify-center gap-2 w-full">
                                 <span>Book Consultation</span>
                                 <ArrowRight className="w-4 h-4" />
@@ -259,7 +265,7 @@ function HeroSection() {
                             transition={{ duration: 0.5, delay: 0.3 }}
                             className="flex items-start gap-4"
                         >
-                            <Link href="#contact">
+                            <Link href="https://shivcosmic.in/forms/">
                                 <button className="btn-primary text-base flex items-center gap-2 group">
                                     <span>Book Consultation</span>
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -313,14 +319,14 @@ function HeroSection() {
                                     style={{ background: 'linear-gradient(135deg, #1f1f28 0%, #151520 50%, #0c0c10 100%)' }}
                                 >
                                     <div className="w-full h-full rounded-full overflow-hidden bg-[#1a1a20] relative">
-                                        <img
+                                        <Image
                                             src="/founder.png"
                                             alt="Mr. Shivsharan Manshetti - Founder of Shiv Cosmic Energy Solutions"
-                                            width={400}
-                                            height={400}
-                                            loading="eager"
-                                            fetchPriority="high"
-                                            className="w-full h-full object-cover"
+                                            fill
+                                            priority
+                                            quality={90}
+                                            sizes="(max-width: 768px) 100vw, 500px"
+                                            className="object-cover"
                                             style={{ filter: 'grayscale(20%) contrast(1.05) brightness(0.98)' }}
                                         />
                                     </div>
@@ -334,7 +340,13 @@ function HeroSection() {
                                 transition={{ duration: 0.4, delay: 0.5 }}
                                 className="absolute top-0 right-0 z-20 w-20 h-20 rounded-2xl bg-[var(--background-card)]/90 border border-[var(--border-accent)] shadow-xl flex items-center justify-center backdrop-blur-lg"
                             >
-                                <img src="/logo-icon.png" alt="" className="w-12 h-12 object-contain" loading="lazy" />
+                                <Image
+                                    src="/logo-icon.png"
+                                    alt=""
+                                    width={48}
+                                    height={48}
+                                    className="object-contain"
+                                />
                             </motion.div>
 
                             {/* Experience badge */}

@@ -52,20 +52,135 @@ function AboutSection() {
 
     return (
         <section id="about" className="py-16 md:py-20 lg:py-32 bg-[var(--background)] relative overflow-hidden">
-            {/* Background - static on mobile */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div
-                    className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full blur-[150px]"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(167, 139, 250, 0.06) 0%, transparent 70%)',
-                    }}
-                />
-                <div
-                    className="absolute bottom-0 left-1/4 w-[350px] h-[350px] rounded-full blur-[130px]"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%)',
-                    }}
-                />
+            {/* Enhanced Background with Animations */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* Aurora gradient layers */}
+                {shouldReduceMotion ? (
+                    <>
+                        <div
+                            className="absolute inset-0 opacity-40"
+                            style={{
+                                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(167, 139, 250, 0.12) 100%)',
+                            }}
+                        />
+                        <div
+                            className="absolute top-0 left-0 w-full h-[400px] blur-[120px]"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%)',
+                            }}
+                        />
+                    </>
+                ) : (
+                    <>
+                        {/* Top flowing gradient curtain */}
+                        <motion.div
+                            className="absolute -top-[200px] left-0 w-[150%] h-[600px] blur-[120px]"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.15) 40%, transparent 100%)',
+                            }}
+                            animate={{
+                                x: ['-10%', '10%', '-10%'],
+                                rotate: [0, 5, 0],
+                            }}
+                            transition={{
+                                duration: 15,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+
+                        {/* Bottom flowing gradient curtain */}
+                        <motion.div
+                            className="absolute -bottom-[200px] right-0 w-[150%] h-[600px] blur-[120px]"
+                            style={{
+                                background: 'linear-gradient(0deg, rgba(59, 130, 246, 0.2) 0%, rgba(167, 139, 250, 0.12) 40%, transparent 100%)',
+                            }}
+                            animate={{
+                                x: ['10%', '-10%', '10%'],
+                                rotate: [0, -5, 0],
+                            }}
+                            transition={{
+                                duration: 18,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+
+                        {/* Animated wave overlay 1 */}
+                        <motion.div
+                            className="absolute left-0 top-1/4 w-full h-[300px] blur-[100px]"
+                            style={{
+                                background: 'radial-gradient(ellipse at center, rgba(167, 139, 250, 0.18) 0%, transparent 70%)',
+                            }}
+                            animate={{
+                                x: ['-20%', '20%', '-20%'],
+                                scaleX: [1, 1.3, 1],
+                            }}
+                            transition={{
+                                duration: 12,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+
+                        {/* Animated wave overlay 2 */}
+                        <motion.div
+                            className="absolute right-0 bottom-1/4 w-full h-[300px] blur-[100px]"
+                            style={{
+                                background: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.15) 0%, transparent 70%)',
+                            }}
+                            animate={{
+                                x: ['20%', '-20%', '20%'],
+                                scaleX: [1, 1.4, 1],
+                            }}
+                            transition={{
+                                duration: 14,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+
+                        {/* Shimmer particle 1 */}
+                        <motion.div
+                            className="absolute top-1/3 left-1/4 w-[250px] h-[250px] rounded-full blur-[90px]"
+                            style={{
+                                background: 'radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)',
+                            }}
+                            animate={{
+                                y: [0, -50, 0],
+                                opacity: [0.3, 0.7, 0.3],
+                                scale: [1, 1.2, 1],
+                            }}
+                            transition={{
+                                duration: 8,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+                        {/* Shimmer particle 2 */}
+                        <motion.div
+                            className="absolute bottom-1/3 right-1/4 w-[220px] h-[220px] rounded-full blur-[85px]"
+                            style={{
+                                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, transparent 70%)',
+                            }}
+                            animate={{
+                                y: [0, 50, 0],
+                                opacity: [0.4, 0.8, 0.4],
+                                scale: [1, 1.15, 1],
+                            }}
+                            transition={{
+                                duration: 10,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+                    </>
+                )}
             </div>
 
             <div className="section-container relative z-10">
@@ -78,38 +193,69 @@ function AboutSection() {
                         transition={{ duration: 0.5 }}
                         className="relative"
                     >
-                        <div className="aspect-square max-w-lg mx-auto lg:mx-0 relative">
-                            {/* Glow ring - static on mobile */}
-                            {shouldReduceMotion ? (
-                                <div
-                                    className="absolute inset-[-6px] rounded-3xl"
-                                    style={{
-                                        background: 'conic-gradient(from 45deg, transparent, #A78BFA, #6366F1, #818CF8, transparent)',
-                                        opacity: 0.4,
-                                    }}
-                                />
-                            ) : (
-                                <motion.div
-                                    className="absolute inset-[-6px] rounded-3xl"
-                                    style={{
-                                        background: 'conic-gradient(from 0deg, transparent, #A78BFA, #6366F1, #818CF8, transparent)',
-                                        opacity: 0.4,
-                                        willChange: "transform",
-                                    }}
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                                />
+                        <div className="aspect-video max-w-2xl mx-auto lg:mx-0 relative">
+
+
+
+                            {/* Animated particle glows */}
+                            {!shouldReduceMotion && (
+                                <>
+                                    <motion.div
+                                        className="absolute w-[120px] h-[120px] rounded-full blur-2xl"
+                                        style={{
+                                            background: 'radial-gradient(circle, rgba(167, 139, 250, 0.4) 0%, transparent 70%)',
+                                            top: '10%',
+                                            left: '10%',
+                                        }}
+                                        animate={{
+                                            x: ['0%', '80%', '0%'],
+                                            y: ['0%', '70%', '0%'],
+                                        }}
+                                        transition={{
+                                            duration: 8,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                        }}
+                                    />
+                                    <motion.div
+                                        className="absolute w-[100px] h-[100px] rounded-full blur-xl"
+                                        style={{
+                                            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.35) 0%, transparent 70%)',
+                                            bottom: '10%',
+                                            right: '10%',
+                                        }}
+                                        animate={{
+                                            x: ['0%', '-70%', '0%'],
+                                            y: ['0%', '-60%', '0%'],
+                                        }}
+                                        transition={{
+                                            duration: 10,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                        }}
+                                    />
+                                    <motion.div
+                                        className="absolute w-[90px] h-[90px] rounded-full blur-lg"
+                                        style={{
+                                            background: 'radial-gradient(circle, rgba(129, 140, 248, 0.3) 0%, transparent 70%)',
+                                            top: '50%',
+                                            right: '5%',
+                                        }}
+                                        animate={{
+                                            x: ['0%', '-50%', '0%'],
+                                            y: ['-25%', '25%', '-25%'],
+                                        }}
+                                        transition={{
+                                            duration: 12,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                        }}
+                                    />
+                                </>
                             )}
 
-                            {/* Glow */}
-                            <div
-                                className="absolute inset-[-4px] rounded-3xl blur-lg"
-                                style={{
-                                    background: 'radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%)',
-                                }}
-                            />
 
-                            {/* Image frame */}
+                            {/* Video frame */}
                             <div
                                 className="absolute inset-0 rounded-3xl p-[3px]"
                                 style={{
@@ -118,14 +264,13 @@ function AboutSection() {
                             >
                                 <div className="w-full h-full rounded-[calc(1.5rem-3px)] bg-gradient-to-b from-[#1f1f28] to-[#0c0c10] p-[3px]">
                                     <div className="w-full h-full rounded-[calc(1.5rem-6px)] overflow-hidden">
-                                        <img
-                                            src="/founder.png"
-                                            alt="Mr. Shivsharan Manshetti"
-                                            width={400}
-                                            height={400}
-                                            loading="lazy"
-                                            className="w-full h-full object-cover"
-                                            style={{ filter: 'grayscale(30%) contrast(1.05)' }}
+                                        <iframe
+                                            src="https://www.youtube.com/embed/-7oALzHZES8?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0&disablekb=1"
+                                            title="VSL - Shiv Cosmic Energy Solutions"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowFullScreen
+                                            className="w-full h-full"
+                                            style={{ border: 'none' }}
                                         />
                                     </div>
                                 </div>

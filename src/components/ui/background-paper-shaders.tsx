@@ -73,14 +73,16 @@ export function ShaderPlane({
 
     useFrame((state) => {
         if (mesh.current) {
+            // eslint-disable-next-line react-hooks/immutability
             uniforms.time.value = state.clock.elapsedTime
+            // eslint-disable-next-line react-hooks/immutability
             uniforms.intensity.value = 1.0 + Math.sin(state.clock.elapsedTime * 2) * 0.3
         }
     })
 
     return (
         <mesh ref={mesh} position={position}>
-            <planeGeometry args={[2, 2, 32, 32]} />
+            <planeGeometry args={[2, 2, 16, 16]} />
             <shaderMaterial
                 uniforms={uniforms}
                 vertexShader={vertexShader}

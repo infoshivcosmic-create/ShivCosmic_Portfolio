@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Sparkles, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -30,16 +31,19 @@ export default function Header() {
             <div className="section-container">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center group">
+                    <Link href="/" className="flex items-center group" aria-label="Shiv Cosmic Energy Solutions Home">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.3 }}
-                            className="relative"
+                            className="relative h-12 md:h-16 w-32 md:w-48"
                         >
-                            <img
+                            <Image
                                 src="/logo-full.png"
                                 alt="Shiv Cosmic Energy Solutions"
-                                className="h-12 md:h-16 w-auto"
+                                width={192}
+                                height={64}
+                                className="w-full h-full object-contain"
+                                priority
                             />
                         </motion.div>
                     </Link>
@@ -50,7 +54,7 @@ export default function Header() {
                             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                             Available
                         </span>
-                        <Link href="#contact" className="btn-primary text-sm">
+                        <Link href="https://shivcosmic.in/forms/" className="btn-primary text-sm">
                             Book Consultation
                         </Link>
                     </div>
@@ -59,6 +63,7 @@ export default function Header() {
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         className="md:hidden text-[var(--text-primary)] p-2 hover:bg-white/5 rounded-lg transition-colors"
+                        aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                     >
                         {isMobileMenuOpen ? (
                             <X className="w-6 h-6" />
@@ -90,7 +95,7 @@ export default function Header() {
                                 Benefits
                             </MobileNavLink>
                             <Link
-                                href="#contact"
+                                href="https://shivcosmic.in/forms/"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="btn-primary text-sm font-semibold mt-4 w-full text-center"
                             >

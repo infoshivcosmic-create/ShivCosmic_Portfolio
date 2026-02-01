@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 :root {
+  /* Premium Gold Accent */
+  --gold-accent: #D4AF37;
+  --gold-light: #E8C878;
+  --gold-dark: #B8941F;
+
+
   /* Primary Colors - Minimal Dark Theme */
   --background: #0C0C0C;
   --background-secondary: #111111;
@@ -23,6 +29,15 @@
 
   /* Foreground for Tailwind */
   --foreground: var(--text-primary);
+
+  /* McKinsey-Inspired Consultation Page Colors */
+  --consultation-navy: #003366;
+  --consultation-bg: #FFFFFF;
+  --consultation-surface: #F8F9FA;
+  --consultation-text: #1A1A1A;
+  --consultation-text-secondary: #6C757D;
+  --consultation-border: #DEE2E6;
+  --consultation-accent: #003366;
 }
 
 @theme inline {
@@ -36,9 +51,10 @@
 }
 
 /* Smooth Scrolling */
-html {
+/* Smooth Scrolling - Handled by Lenis in SmoothScroll.tsx */
+/* html {
   scroll-behavior: smooth;
-}
+} */
 
 /* Base Body Styles */
 body {
@@ -66,6 +82,19 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-hover);
+}
+
+/* Premium Breathing Glow Animation */
+@keyframes breathing-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
 }
 
 /* Typography */
@@ -506,5 +535,36 @@ h6 {
   .animate-pulse-glow,
   .animate-marquee {
     animation: none;
+  }
+}
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+
+  /* Disable heavy box-shadow animations on mobile */
+  .animate-pulse-glow,
+  .glow-accent,
+  .glow-accent-subtle,
+  .btn-primary {
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  /* Simplify backdrop filters which are expensive */
+  .glass,
+  .glass-dark,
+  .glass-accent,
+  .floating-badge {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--background-card);
+    /* Fallback */
+  }
+
+  /* Ensure no overflow */
+  body,
+  html {
+    overflow-x: hidden;
+    width: 100%;
   }
 }

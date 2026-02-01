@@ -7,7 +7,6 @@ import { useRef } from "react"
 import { useInView } from "framer-motion"
 
 interface TestimonialsSectionProps {
-    title: string
     description: string
     testimonials: Array<{
         author: TestimonialAuthor
@@ -18,7 +17,6 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsMarquee({
-    title,
     description,
     testimonials,
     className
