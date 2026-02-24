@@ -4,10 +4,8 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better development
   reactStrictMode: true,
 
-  // GitHub Pages Configuration
+  // Static export for Hostinger (no server required)
   output: 'export',
-  basePath: '/ShivCosmic_Portfolio',
-  assetPrefix: '/ShivCosmic_Portfolio/',
   trailingSlash: true,
 
   // Optimize images (unoptimized required for static export without loader)

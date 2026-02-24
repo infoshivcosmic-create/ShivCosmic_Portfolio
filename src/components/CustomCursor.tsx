@@ -11,7 +11,6 @@ export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
     const isTouchDevice = useIsTouchDevice();
 
-    // Memoized handlers to prevent recreation
     const handleMouseMove = useCallback((e: MouseEvent) => {
         setMousePosition({ x: e.clientX, y: e.clientY });
         setIsVisible(true);
@@ -25,7 +24,6 @@ export default function CustomCursor() {
     const handleHoverOut = useCallback(() => setIsHovering(false), []);
 
     useEffect(() => {
-        // Skip entirely on touch devices
         if (isTouchDevice) return;
 
         window.addEventListener("mousemove", handleMouseMove, { passive: true });
@@ -34,7 +32,6 @@ export default function CustomCursor() {
         window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mouseup", handleMouseUp);
 
-        // Use CSS-based hover detection via event delegation
         const handleElementHover = (e: Event) => {
             const target = e.target as HTMLElement;
             if (target.matches('a, button, [role="button"], input, textarea, select, .hoverable')) {
@@ -57,39 +54,72 @@ export default function CustomCursor() {
         };
     }, [isTouchDevice, handleMouseMove, handleMouseEnter, handleMouseLeave, handleMouseDown, handleMouseUp, handleHoverIn, handleHoverOut]);
 
-    // Don't render on touch devices
-    if (isTouchDevice) {
-        return null;
-    }
+    if (isTouchDevice) return null;
+
+    const outerSize = isHovering ? 44 : 32;
+    const innerSize = isClicking ? 4 : 6;
 
     return (
-        <motion.div
-            className="fixed top-0 left-0 pointer-events-none z-[9998]"
-            style={{ willChange: "transform" }}
-            animate={{
-                x: mousePosition.x - (isHovering ? 24 : 16),
-                y: mousePosition.y - (isHovering ? 24 : 16),
-                scale: isClicking ? 0.9 : 1,
-                opacity: isVisible ? 1 : 0,
-            }}
-            transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 30,
-                mass: 0.3,
-            }}
-        >
-            <div
-                className={`rounded-full border-2 border-white/60 transition-all duration-200 ${isHovering
-                        ? "w-12 h-12 bg-white/10 border-white/80"
-                        : "w-8 h-8 bg-transparent"
-                    }`}
-                style={{
-                    boxShadow: isHovering
-                        ? "0 0 20px rgba(255, 255, 255, 0.3)"
-                        : "0 0 10px rgba(255, 255, 255, 0.15)",
+        <>
+            {/* Outer ring — lags behind for premium feel */}
+            <motion.div
+                className="fixed top-0 left-0 pointer-events-none z-[9998]"
+                style={{ willChange: "transform" }}
+                animate={{
+                    x: mousePosition.x - outerSize / 2,
+                    y: mousePosition.y - outerSize / 2,
+                    scale: isClicking ? 0.85 : 1,
+                    opacity: isVisible ? 1 : 0,
                 }}
-            />
-        </motion.div>
+                transition={{
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 28,
+                    mass: 0.4,
+                }}
+            >
+                <div
+                    style={{
+                        width: outerSize,
+                        height: outerSize,
+                        borderRadius: "50%",
+                        border: isHovering ? "1.5px solid rgba(167,139,250,0.9)" : "1.5px solid rgba(255,255,255,0.6)",
+                        background: isHovering ? "rgba(167,139,250,0.08)" : "transparent",
+                        boxShadow: isHovering
+                            ? "0 0 18px rgba(167,139,250,0.35), inset 0 0 8px rgba(167,139,250,0.1)"
+                            : "0 0 10px rgba(255,255,255,0.12)",
+                        transition: "width 0.2s cubic-bezier(0.22,1,0.36,1), height 0.2s cubic-bezier(0.22,1,0.36,1), border-color 0.2s ease, background 0.2s ease",
+                    }}
+                />
+            </motion.div>
+
+            {/* Inner dot — snaps instantly to pointer */}
+            <motion.div
+                className="fixed top-0 left-0 pointer-events-none z-[9999]"
+                style={{ willChange: "transform" }}
+                animate={{
+                    x: mousePosition.x - innerSize / 2,
+                    y: mousePosition.y - innerSize / 2,
+                    opacity: isVisible ? (isHovering ? 0 : 1) : 0,
+                    scale: isClicking ? 1.5 : 1,
+                }}
+                transition={{
+                    type: "spring",
+                    stiffness: 800,
+                    damping: 35,
+                    mass: 0.1,
+                }}
+            >
+                <div
+                    style={{
+                        width: innerSize,
+                        height: innerSize,
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.95)",
+                        boxShadow: "0 0 6px rgba(255,255,255,0.5)",
+                    }}
+                />
+            </motion.div>
+        </>
     );
 }
